@@ -1,0 +1,25 @@
+{
+  "name": "msc-plugin-express",
+  "version": "0.0.1",
+  "description": "microservice chassis express.js plugin",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mujichOk/msc-plugin-express.git"
+  },
+  "keywords": [
+    "microservice",
+    "chassis",
+    "plugin",
+    "express"
+  ],
+  "author": "mujichOk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mujichOk/msc-plugin-express/issues"
+  },
+  "homepage": "https://github.com/mujichOk/msc-plugin-express#readme"
+}
