@@ -2,13 +2,14 @@
   "name": "msc-plugin-express",
   "version": "0.0.1",
   "description": "microservice chassis express.js plugin",
-  "main": "src/index.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "jest"
+    "build": "rm -rf build && babel source --out-dir build --source-maps",
+    "test": "jest --config ./jest.config.json"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mujichOk/msc-plugin-express.git"
+    "url": "https://github.com/mujichOk/msc-plugin-express.git"
   },
   "keywords": [
     "microservice",
@@ -21,5 +22,18 @@
   "bugs": {
     "url": "https://github.com/mujichOk/msc-plugin-express/issues"
   },
-  "homepage": "https://github.com/mujichOk/msc-plugin-express#readme"
+  "homepage": "https://github.com/mujichOk/msc-plugin-express#readme",
+  "peerDependencies": {
+    "msc-core": "file:///Users/lex/Documents/mujichOk/msc/msc-core"
+  },
+  "dependencies": {
+    "express": "4.15.4",
+    "msc-core": "file:///Users/lex/Documents/mujichOk/msc/msc-core"
+  },
+  "devDependencies": {
+    "babel-jest": "21.0.2",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-preset-es2017": "6.24.1",
+    "jest": "21.1.0"
+  }
 }
