@@ -1,30 +1,48 @@
 const express = require('express');
+const http = require('http');
 
-module.exports = plugin;
+module.exports = pluginFactory;
 
-function plugin({ suppressDefaultOnHost } = {}) {
+
+function pluginFactory({ suppressDefaultOnStart, suppressDefaultOnStop } = {}) {
 
     return {
         onPreInit,
-        onHost
+        onStart,
+        onStop
     };
 
+
     function onPreInit(context) {
-        context.web = context.web || {};
-        context.web.express = {};
-        context.web.express.app = express();
+        context.express = {};
+        context.express.app = express();
+
+        context.http = context.http || {};
+        context.http.server = http.createServer(context.express.app);
     }
 
-    async function onHost(context) {
-        if (suppressDefaultOnHost) {
+    async function onStart(context) {
+        if (suppressDefaultOnStart) {
             return;
         }
 
-        const port = await context.get('web.port');
+        const port = await context.get('http.port');
 
         return new Promise((resolve, reject) => {
-            context.web.express.app
+            context.http.server
                 .listen(port, resolve)
+                .on('error', reject);
+        });
+    }
+
+    function onStop(context) {
+        if (suppressDefaultOnStop) {
+            return;
+        }
+
+        return new Promise((resolve, reject) => {
+            context.http.server
+                .close(resolve)
                 .on('error', reject);
         });
     }
