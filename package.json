@@ -27,6 +27,7 @@
     "msc-core": "file:///Users/lex/Documents/mujichOk/msc/msc-core"
   },
   "dependencies": {
+    "body-parser": "1.18.2",
     "express": "4.15.4",
     "msc-core": "file:///Users/lex/Documents/mujichOk/msc/msc-core"
   },
@@ -34,6 +35,7 @@
     "babel-jest": "21.0.2",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-preset-es2017": "6.24.1",
-    "jest": "21.1.0"
+    "jest": "21.1.0",
+    "node-fetch": "1.7.3"
   }
 }
