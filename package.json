@@ -2,9 +2,8 @@
   "name": "msc-plugin-express",
   "version": "0.0.1",
   "description": "microservice chassis express.js plugin",
-  "main": "build/index.js",
+  "main": "source/index.js",
   "scripts": {
-    "build": "rm -rf build && babel source --out-dir build --source-maps",
     "test": "jest --config ./jest.config.json"
   },
   "repository": {
@@ -24,17 +23,14 @@
   },
   "homepage": "https://github.com/mujichOk/msc-plugin-express#readme",
   "peerDependencies": {
-    "msc-core": "file:///Users/lex/Documents/mujichOk/msc/msc-core"
+    "msc-core": "file://..//msc-core"
   },
   "dependencies": {
     "body-parser": "1.18.2",
     "express": "4.15.4",
-    "msc-core": "file:///Users/lex/Documents/mujichOk/msc/msc-core"
+    "msc-core": "file://../msc-core"
   },
   "devDependencies": {
-    "babel-jest": "21.0.2",
-    "babel-plugin-transform-object-rest-spread": "6.26.0",
-    "babel-preset-es2017": "6.24.1",
     "jest": "21.1.0",
     "node-fetch": "1.7.3"
   }

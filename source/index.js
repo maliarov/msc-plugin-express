@@ -46,27 +46,22 @@ function pluginFactory({
             const route = meta.route || `/${key}`;
 
             switch (verb) {
+                case 'get':
+                case 'post':
+                case 'put':
+                case 'patch':
+                case 'delete':
+                    return context.express.app[verb](route, handler);
                 case '*':
                     return context.express.app.use(route, handler);
-                case 'get':
-                    return context.express.app.get(route, handler);
-                case 'post':
-                    return context.express.app.post(route, handler);
-                case 'put':
-                    return context.express.app.put(route, handler);
-                case 'patch':
-                    return context.express.app.patch(route, handler);
-                case 'delete':
-                    return context.express.app.delete(route, handler);
-
                 default:
-                    throw new Error('not supported verb');
+                    throw new Error(`not supported verb [${verb}]`);
             }
 
 
             function handler(req, res, next) {
 
-                method({ data: req.body, ...req.params, ...req.query })
+                method(Object.assign({}, req.params, req.query, { data: req.body }))
                     .then(onSuccess, next);
 
 
