@@ -1,7 +1,9 @@
 const util = require('util');
 const http = require('http');
-const express = require('express');
-const bodyParser = require('body-parser');
+
+const Express = require('express');
+const ExpressRouter = require('express-promise-router');
+const ExpressBodyParser = require('body-parser');
 
 module.exports = pluginFactory;
 
@@ -22,10 +24,10 @@ function pluginFactory({
 
     function onPreInit(context) {
         context.express = {};
-        context.express.app = express();
+        context.express.app = Express();
 
         if (!suppressDefaultBodyParser) {
-            context.express.app.use(bodyParser.json({ type: 'application/json' }));
+            context.express.app.use(ExpressBodyParser.json({ type: 'application/json' }));
         }
 
         context.http = context.http || {};
@@ -33,11 +35,15 @@ function pluginFactory({
     }
 
     function onInit(context) {
+        const router = ExpressRouter();
 
         Object
             .keys(context.call)
             .filter((key) => util.isFunction(context.call[key]) && context.call[key].meta && context.call[key].meta.express)
             .forEach(register);
+
+        context.express.app.use('/', router);
+            
 
         function register(key) {
             const method = context.call[key];
@@ -51,11 +57,11 @@ function pluginFactory({
                 case 'put':
                 case 'patch':
                 case 'delete':
-                    return context.express.app[verb](route, handler);
+                    return router[verb](route, handler);
                 case '*':
-                    return context.express.app.use(route, handler);
+                    return router.use(route, handler);
                 default:
-                    throw new Error(`not supported verb [${verb}]`);
+                    throw new Error(`not supported verb`);
             }
 
 
