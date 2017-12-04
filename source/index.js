@@ -5,10 +5,10 @@ const Express = require('express');
 const ExpressRouter = require('express-promise-router');
 const ExpressBodyParser = require('body-parser');
 
-module.exports = pluginFactory;
+module.exports = PluginFactory;
 
 
-function pluginFactory({
+function PluginFactory({
     suppressDefaultOnStart = false,
     suppressDefaultOnStop = false,
     suppressDefaultBodyParser = false
@@ -43,12 +43,13 @@ function pluginFactory({
             .forEach(register);
 
         context.express.app.use('/', router);
-            
+
 
         function register(key) {
             const method = context.call[key];
             const meta = method.meta.express;
             const verb = meta.verb || 'get';
+            const methodArgsMapping = meta.args || [];
             const route = meta.route || `/${key}`;
 
             switch (verb) {
@@ -65,20 +66,29 @@ function pluginFactory({
             }
 
 
-            function handler(req, res, next) {
-
-                method(Object.assign({}, req.params, req.query, { data: req.body }))
-                    .then(onSuccess, next);
-
-
-                function onSuccess(value) {
-                    if (!value) {
-                        return res.status(200).end();
+            async function handler(req, res, next) {
+                const args = methodArgsMapping.reduce((args, key) => {
+                    if (key === 'body') {
+                        return args.concat(req.body);
+                    } else if (key === 'params') {
+                        return args.concat(req.params);
+                    } else if (key === 'query') {
+                        return args.concat(req.query);
+                    } else if (key.startsWith('params.')) {
+                        return args.concat(req.params[key.slice('params.'.length)]);
+                    } else if (key.startsWith('query.')) {
+                        return args.concat(req.query[key.slice('query.'.length)]);
                     }
+                    return args;
+                }, []);
 
+                const value = await method.apply(null, args);
+
+                if (value) {
                     return res.json(value).end();
                 }
 
+                return res.status(200).end();
             }
         }
 

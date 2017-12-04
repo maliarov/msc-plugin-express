@@ -13,7 +13,7 @@ describe('basic plugin initialization validation', () => {
     it('should throw error', async () => {
         try {
             await microservice
-                .use.method('hello', ({ params }) => null, { express: { verb: 'test', route: '/api/hello' } })
+                .use.method('hello', (params, opts) => null, { express: { verb: 'test', route: '/api/hello' } })
                 .start();
         } catch (e) {
             expect(e).toMatchObject(new Error('not supported verb'));
