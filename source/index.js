@@ -49,15 +49,11 @@ function pluginFactory({
                 case '*':
                     return context.express.app.use(route, handler);
                 case 'get':
-                    return context.express.app.get(route, handler);
                 case 'post':
-                    return context.express.app.post(route, handler);
                 case 'put':
-                    return context.express.app.put(route, handler);
                 case 'patch':
-                    return context.express.app.patch(route, handler);
                 case 'delete':
-                    return context.express.app.delete(route, handler);
+                    return context.express.app[verb](route, handler);
 
                 default:
                     throw new Error('not supported verb');
